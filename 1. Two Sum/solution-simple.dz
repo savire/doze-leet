@@ -1,0 +1,82 @@
+# Leet Code #1 - TwoSum
+# https://leetcode.com/problems/two-sum/
+U console
+
+# @param number[] nums
+# @param number target
+# @return number[]
+D twoSum nums, target {
+  # Implements your solution here
+  L alen = nums.length
+  
+  # Outer loop
+  F i : 0..alen {
+    # Inner loop
+    F j : 0..alen {
+      # If the sum of the two number equals to target and
+      # the index are not the same then its the answer
+      I nums[i] + nums[j] == target && i != j {
+        # Build the answer
+        L result = [i,j]
+        
+        # Return it
+        R result
+      }
+    }
+  }
+}
+
+D main {
+  # Test Case 1
+  Z "# Case 1"
+  L -nums = [2,7,11,15] 
+  L -target = 9
+  L -correct = [0,1]
+  L -answer = twoSum(nums, target)
+  Z "------------------------"
+  Z "INPUT"
+  Z "nums = ", nums
+  Z "target = ", target
+  Z "OUTPUT"
+  Z answer
+  Z "EXPECTED"
+  Z correct
+  I answer.toString()==correct.toString() { Z "> PASS" } EL { Z "> FAIL" }
+  
+  Z "========================"
+  
+  # Test Case 2
+  Z "# Case 2"
+  nums = [3,2,4] 
+  target = 6
+  correct = [1,2]
+  answer = twoSum(nums, target)
+  Z "------------------------"
+  Z "INPUT"
+  Z "nums = ", nums
+  Z "target = ", target
+  Z "OUTPUT"
+  Z answer
+  Z "EXPECTED"
+  Z correct
+  I answer.toString()==correct.toString() { Z "> PASS" } EL { Z "> FAIL" }
+  
+  Z "========================"
+    
+  # Test Case 3
+  Z "# Case 3"
+  nums = [3,3] 
+  target = 6
+  correct = [0,1]
+  answer = twoSum(nums, target)
+  Z "------------------------"
+  Z "INPUT"
+  Z "nums = ", nums
+  Z "target = ", target
+  Z "OUTPUT"
+  Z answer
+  Z "EXPECTED"
+  Z correct
+  I answer.toString()==correct.toString() { Z "> PASS" } EL { Z "> FAIL" }
+  
+}
