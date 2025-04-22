@@ -1,0 +1,48 @@
+# Leet Code #180 - Consecutive Numbers
+# https://leetcode.com/problems/consecutive-numbers/
+U console
+
+# Define the query to detect three consecutive logs with the same 'num' value
+D getQuery {
+  L query = 
+    S ! l1.num > ConsecutiveNums         # Select the consecutive number matched three times
+    F Logs > l1, Logs > l2, Logs > l3    # From Logs table three times aliased as l1, l2, l3
+    W l1.num = l2.num, l2.num = l3.num,  # Check consecutive rows have same 'num' value
+      l1.id = l2.id - 1,                 # Ensure l2 is the immediate next row after l1
+      l2.id = l3.id - 1                  # Ensure l3 is the immediate next row after l2
+
+  R query
+}
+
+# Main function for test initialization and validation
+D ~main {
+  L pool = "DB_POOL"
+  # Initialize the database and Logs table
+  `db_rs(pool, "DROP TABLE IF EXISTS Logs")                         # Clean existing Logs table if any
+  `db_rs(pool, "CREATE TABLE Logs (id number, num string)")         # Create Logs with columns id and num
+  
+  # Populate Logs with sample data
+  `db_rs(pool, "INSERT INTO Logs VALUES (1,'1'), (2,'1'), (3,'1'), (4,'2'), (5,'1'), (6, '2'), (7, '2')")
+  
+  # Output test case input logs
+  Z "# Case 1"
+  Z "INPUT"
+  L qi = S * F Logs                  # Query all rows from Logs table
+  L reti = `db_rs(pool, qi)          # Execute query
+  `db_dump(reti)                     # Display input for verification
+  
+  # Output expected consecutive number results
+  Z "OUTPUT"
+  L qo = getQuery()                  # Get the consecutive numbers query defined above
+  L reto = `db_rs(pool, qo)          # Execute consecutive numbers query
+  `db_dump(reto)                     # Display output result
+  
+  # Expected output for validation
+  Z "EXPECTED"
+  L item = {"ConsecutiveNums": "1"}  # Expected consecutive number is "1"
+  L rete = [item]
+  `db_dump(rete)
+  
+  # Compare actual output with expected output and indicate pass or fail
+  I deepEqual(reto,rete) { Z "> PASS"  } EL { Z "> FAIL" }
+}
